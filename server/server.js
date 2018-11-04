@@ -1,21 +1,19 @@
 require('./config/config');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(bodyParser.json());
 
-app.post('/usuario', (req,res) => {
-  let body = req.body;
-  res.send({
-    body
-  });
-});
+app.use(require('./routes/usuario'));
 
-app.get('/', (req,res) => {
-  res.json("Perro");
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex:true }, (err,res) => {
+  if(err) throw err;
+
+  console.log("DB online");
 });
 
 app.listen(process.env.PORT, () => {
