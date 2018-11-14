@@ -24,7 +24,7 @@ let usuarioSchema = new Schema({
   },
   img:{
     type: String,
-    required: false
+    default: "penny"
   },
   role:{
     type: String,
