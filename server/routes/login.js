@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client(process.env.CLIENT_ID);
 
+const speakeasy = require('speakeasy');
+
 const Usuario = require('../models/usuario');
 const app = express();
 
@@ -138,5 +140,19 @@ app.post('/google', async(req,res) => {
 
     });
 });
+
+app.post('/auth', (req,res) => {
+  let utoken = req.body.token;
+  let secret = req.body.secret;
+
+  let verified = speakeasy.totp.verify({
+  secret: secret,
+  encoding: 'base32',
+  token: utoken
+  });
+
+  res.json({verified})
+});
+
 
 module.exports = app;
